@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Puzzle 3 – Spot the Difference</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>🧩 Puzzle 3: Spot the Difference</h1>
+    <p class="note">Find 1 difference in each set. Tap on the right image.</p>
+    <p id="round-label">Round 1 of 3</p>
+
+    <div id="image-pair">
+      <img id="left-img" src="left-image-1.png" alt="Left" />
+      <img id="right-img" src="right-image-1.png" alt="Right" />
+    </div>
+
+    <p id="result" class="hidden"></p>
+    <button id="next-btn" class="hidden">Next</button>
+  </main>
+
+  <script>
+    const totalRounds = 3;
+
+    const differenceZones = [
+      // Example zones: [x, y] center of clickable area
+      { x: 150, y: 200 }, // round 1
+      { x: 120, y: 180 }, // round 2
+      { x: 100, y: 250 }  // round 3
+    ];
+
+    const tolerance = 50; // px radius
+
+    let current = 1;
+
+    const leftImg = document.getElementById("left-img");
+    const rightImg = document.getElementById("right-img");
+    const result = document.getElementById("result");
+    const nextBtn = document.getElementById("next-btn");
+    const roundLabel = document.getElementById("round-label");
+
+    function loadRound() {
+      leftImg.src = `left-image-${current}.png`;
+      rightImg.src = `right-image-${current}.png`;
+      roundLabel.textContent = `Round ${current} of 3`;
+      result.classList.add("hidden");
+      nextBtn.classList.add("hidden");
+    }
+
+    rightImg.addEventListener("click", (e) => {
+      const rect = rightImg.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+
+      const target = differenceZones[current - 1];
+      const dx = clickX - target.x;
+      const dy = clickY - target.y;
+
+      if (Math.sqrt(dx * dx + dy * dy) <= tolerance) {
+        result.textContent = "✅ Correct!";
+        result.classList.remove("hidden");
+        nextBtn.classList.remove("hidden");
+      } else {
+        result.textContent = "❌ Not quite. Try again.";
+        result.classList.remove("hidden");
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      current++;
+      if (current > totalRounds) {
+        window.location.href = "logic.html";
+      } else {
+        loadRound();
+      }
+    });
+
+    loadRound();
+  </script>
+</body>
+</html>
