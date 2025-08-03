@@ -1,9 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Puzzle – Riddles</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
 <body>
+  <main class="container">
+    <h1>🧩 Puzzle 1: Riddle Me This</h1>
 
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
+    <div id="riddle-container">
+      <p id="riddle-text"></p>
+      <input type="text" id="riddle-input" placeholder="Enter answer..." />
+      <button id="submit-btn">Submit</button>
+      <p id="feedback" class="hidden"></p>
+    </div>
+  </main>
 
+  <script>
+    const riddles = [
+      {
+        question: "I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?",
+        answer: "map"
+      },
+      {
+        question: "The more of me you take, the more you leave behind. What am I?",
+        answer: "footsteps"
+      },
+      {
+        question: "You leave home, take three left turns, and return home. Who’s waiting for you?",
+        answer: "catcher"
+      },
+      {
+        question: "Forward I am heavy, but backward I am not. What am I?",
+        answer: "ton"
+      }
+    ];
+
+    let current = 0;
+
+    const riddleText = document.getElementById("riddle-text");
+    const input = document.getElementById("riddle-input");
+    const submitBtn = document.getElementById("submit-btn");
+    const feedback = document.getElementById("feedback");
+
+    function loadRiddle() {
+      riddleText.textContent = riddles[current].question;
+      input.value = "";
+      feedback.classList.add("hidden");
+    }
+
+    submitBtn.addEventListener("click", () => {
+      const userAnswer = input.value.trim().toLowerCase();
+      const correctAnswer = riddles[current].answer;
+
+      if (userAnswer === correctAnswer) {
+        feedback.textContent = "✅ Correct!";
+        feedback.classList.remove("hidden");
+        current++;
+        if (current < riddles.length) {
+          setTimeout(loadRiddle, 1000);
+        } else {
+          setTimeout(() => {
+            window.location.href = "puzzles/wordle.html";
+          }, 1200);
+        }
+      } else {
+        feedback.textContent = "❌ Try again.";
+        feedback.classList.remove("hidden");
+      }
+    });
+
+    loadRiddle();
+  </script>
 </body>
 </html>
