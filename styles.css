@@ -58,3 +58,16 @@ button {
   font-weight: bold;
   text-transform: uppercase;
 }
+#image-pair {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  margin-top: 1em;
+  flex-wrap: wrap;
+}
+
+#image-pair img {
+  max-width: 45%;
+  height: auto;
+  border: 2px solid #ccc;
+}
