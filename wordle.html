@@ -4,14 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Puzzle 2 – Wordle</title>
-  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <main class="container">
     <h1>🧩 Puzzle 2: Word Challenge</h1>
+    <p class="note">Guess the word. All answers are <strong>4 letters</strong>.</p>
     <p id="round-label">Round 1 of 3</p>
+    
     <div id="board"></div>
-    <input id="word-input" type="text" maxlength="4" placeholder="4-letter word" autocomplete="off"/>
+    
+    <input id="word-input" type="text" maxlength="4" placeholder="4-letter word" autocomplete="off" />
     <button id="submit-word">Submit</button>
     <p id="feedback" class="hidden"></p>
   </main>
