@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Puzzle 2 – Wordle</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>🧩 Puzzle 2: Word Challenge</h1>
+    <p id="round-label">Round 1 of 3</p>
+    <div id="board"></div>
+    <input id="word-input" type="text" maxlength="4" placeholder="4-letter word" autocomplete="off"/>
+    <button id="submit-word">Submit</button>
+    <p id="feedback" class="hidden"></p>
+  </main>
+
+  <script>
+    const words = ["star", "clay", "smut"];
+    let currentRound = 0;
+    const maxGuesses = 6;
+
+    const board = document.getElementById("board");
+    const input = document.getElementById("word-input");
+    const button = document.getElementById("submit-word");
+    const feedback = document.getElementById("feedback");
+    const roundLabel = document.getElementById("round-label");
+
+    let guesses = [];
+
+    function renderBoard() {
+      board.innerHTML = "";
+      for (let i = 0; i < guesses.length; i++) {
+        const row = document.createElement("div");
+        row.className = "guess-row";
+        for (let j = 0; j < 4; j++) {
+          const box = document.createElement("div");
+          box.className = "letter-box";
+
+          const letter = guesses[i][j];
+          const correctWord = words[currentRound];
+          if (letter) {
+            box.textContent = letter.toUpperCase();
+            if (letter === correctWord[j]) {
+              box.style.background = "green";
+              box.style.color = "white";
+            } else if (correctWord.includes(letter)) {
+              box.style.background = "goldenrod";
+              box.style.color = "white";
+            } else {
+              box.style.background = "#ccc";
+            }
+          }
+
+          row.appendChild(box);
+        }
+        board.appendChild(row);
+      }
+    }
+
+    function nextRound() {
+      currentRound++;
+      if (currentRound >= words.length) {
+        window.location.href = "spot.html";
+        return;
+      }
+      guesses = [];
+      input.value = "";
+      feedback.classList.add("hidden");
+      roundLabel.textContent = `Round ${currentRound + 1} of 3`;
+      renderBoard();
+    }
+
+    button.addEventListener("click", () => {
+      const guess = input.value.trim().toLowerCase();
+      if (guess.length !== 4) {
+        feedback.textContent = "Please enter a 4-letter word.";
+        feedback.classList.remove("hidden");
+        return;
+      }
+
+      guesses.push(guess);
+      renderBoard();
+      input.value = "";
+
+      if (guess === words[currentRound]) {
+        feedback.textContent = "✅ Correct!";
+        feedback.classList.remove("hidden");
+        setTimeout(nextRound, 1200);
+      } else if (guesses.length >= maxGuesses) {
+        feedback.textContent = `❌ Out of guesses. The word was "${words[currentRound]}".`;
+        feedback.classList.remove("hidden");
+        setTimeout(nextRound, 2000);
+      } else {
+        feedback.classList.add("hidden");
+      }
+    });
+
+    renderBoard();
+  </script>
+</body>
+</html>
