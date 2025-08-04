@@ -5,48 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Puzzle 3 – Spot the Difference</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .highlight {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 4px solid red;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    #image-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      gap: 1em;
+      flex-wrap: wrap;
+      margin-top: 1em;
+    }
+
+    #image-wrapper img {
+      max-width: 45%;
+      height: auto;
+      border: 2px solid #ccc;
+    }
+
+    #result {
+      margin-top: 1em;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <main class="container">
     <h1>🧩 Puzzle 3: Spot the Difference</h1>
-    <p class="note">Find 1 difference in each set. Tap on the right image.</p>
+    <p class="note">Click the difference in the right image (just one per round).</p>
     <p id="round-label">Round 1 of 3</p>
 
-    <div id="image-pair">
+    <div id="image-wrapper">
       <img id="left-img" src="left-image-1.png" alt="Left" />
       <img id="right-img" src="right-image-1.png" alt="Right" />
     </div>
 
     <p id="result" class="hidden"></p>
-    <button id="next-btn" class="hidden">Next</button>
   </main>
 
   <script>
-    const totalRounds = 3;
-
-    const differenceZones = [
-      // Example zones: [x, y] center of clickable area
-      { x: 150, y: 200 }, // round 1
-      { x: 120, y: 180 }, // round 2
-      { x: 100, y: 250 }  // round 3
+    const rounds = [
+      { x: 437, y: 574 },
+      { x: 136, y: 515 },
+      { x: 212, y: 317 }
     ];
 
-    const tolerance = 50; // px radius
-
-    let current = 1;
+    const tolerance = 50;
+    let current = 0;
 
     const leftImg = document.getElementById("left-img");
     const rightImg = document.getElementById("right-img");
-    const result = document.getElementById("result");
-    const nextBtn = document.getElementById("next-btn");
     const roundLabel = document.getElementById("round-label");
+    const result = document.getElementById("result");
+    const wrapper = document.getElementById("image-wrapper");
 
     function loadRound() {
-      leftImg.src = `left-image-${current}.png`;
-      rightImg.src = `right-image-${current}.png`;
-      roundLabel.textContent = `Round ${current} of 3`;
+      leftImg.src = `left-image-${current + 1}.png`;
+      rightImg.src = `right-image-${current + 1}.png`;
+      roundLabel.textContent = `Round ${current + 1} of 3`;
       result.classList.add("hidden");
-      nextBtn.classList.add("hidden");
     }
 
     rightImg.addEventListener("click", (e) => {
@@ -54,26 +79,35 @@
       const clickX = e.clientX - rect.left;
       const clickY = e.clientY - rect.top;
 
-      const target = differenceZones[current - 1];
-      const dx = clickX - target.x;
-      const dy = clickY - target.y;
+      const diff = rounds[current];
+      const dx = clickX - diff.x;
+      const dy = clickY - diff.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
 
-      if (Math.sqrt(dx * dx + dy * dy) <= tolerance) {
+      if (distance <= tolerance) {
         result.textContent = "✅ Correct!";
         result.classList.remove("hidden");
-        nextBtn.classList.remove("hidden");
+
+        const highlight = document.createElement("div");
+        highlight.className = "highlight";
+        highlight.style.left = `${rect.left + diff.x - 20}px`;
+        highlight.style.top = `${rect.top + diff.y - 20}px`;
+        highlight.style.position = "absolute";
+
+        document.body.appendChild(highlight);
+
+        setTimeout(() => {
+          highlight.remove();
+          current++;
+          if (current >= rounds.length) {
+            window.location.href = "logic.html";
+          } else {
+            loadRound();
+          }
+        }, 2000);
       } else {
         result.textContent = "❌ Not quite. Try again.";
         result.classList.remove("hidden");
-      }
-    });
-
-    nextBtn.addEventListener("click", () => {
-      current++;
-      if (current > totalRounds) {
-        window.location.href = "logic.html";
-      } else {
-        loadRound();
       }
     });
 
