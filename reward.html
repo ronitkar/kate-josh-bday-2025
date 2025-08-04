@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎁 Your Gift</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .gift-code {
+      font-size: 1.4rem;
+      font-weight: bold;
+      margin-top: 1em;
+      padding: 0.5em;
+      background: #f0f0f0;
+      display: inline-block;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>🎉 You Did It!</h1>
+    <p>You cracked every puzzle — riddle, word, vision, and logic. Now it’s time to get your hands dirty.</p>
+    
+    <h2>Your Gift:</h2>
+    <p>A <strong>pottery wheel class</strong> at the Pittsburgh Pottery Studio!</p>
+    
+    <div class="gift-code">E9G2 GEHD D4GG 9EBH</div>
+    
+    <p style="margin-top: 1em;">Give this code at checkout or when you arrive. You’ll be spinning clay and making memories.</p>
+    
+    <button onclick="window.location.href='index.html'" style="margin-top: 2em;">🔁 Restart the Game</button>
+  </main>
+
+  <script>
+    // Simple confetti burst
+    for (let i = 0; i < 100; i++) {
+      const confetti = document.createElement("div");
+      confetti.style.position = "fixed";
+      confetti.style.left = `${Math.random() * 100}vw`;
+      confetti.style.top = `${Math.random() * -100}vh`;
+      confetti.style.width = "10px";
+      confetti.style.height = "10px";
+      confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 60%)`;
+      confetti.style.opacity = 0.8;
+      confetti.style.zIndex = 999;
+      confetti.style.borderRadius = "50%";
+      confetti.style.animation = `fall ${2 + Math.random() * 3}s linear forwards`;
+      document.body.appendChild(confetti);
+    }
+  </script>
+
+  <style>
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</body>
+</html>
