@@ -11,9 +11,16 @@
       width: 40px;
       height: 40px;
       border-radius: 50%;
-      border: 4px solid red;
       pointer-events: none;
       z-index: 10;
+    }
+
+    .correct-circle {
+      border: 4px solid limegreen;
+    }
+
+    .wrong-x {
+      border: 4px solid red;
     }
 
     #image-wrapper {
@@ -76,28 +83,28 @@
 
     rightImg.addEventListener("click", (e) => {
       const rect = rightImg.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const clickY = e.clientY - rect.top;
+      const scaleX = rightImg.naturalWidth / rect.width;
+      const scaleY = rightImg.naturalHeight / rect.height;
+      const clickX = (e.clientX - rect.left) * scaleX;
+      const clickY = (e.clientY - rect.top) * scaleY;
 
       const diff = rounds[current];
       const dx = clickX - diff.x;
       const dy = clickY - diff.y;
       const distance = Math.sqrt(dx * dx + dy * dy);
 
+      const marker = document.createElement("div");
+      marker.classList.add("highlight");
+      marker.style.left = `${e.clientX - 20}px`;
+      marker.style.top = `${e.clientY - 20}px`;
+      document.body.appendChild(marker);
+
       if (distance <= tolerance) {
+        marker.classList.add("correct-circle");
         result.textContent = "✅ Correct!";
         result.classList.remove("hidden");
-
-        const highlight = document.createElement("div");
-        highlight.className = "highlight";
-        highlight.style.left = `${rect.left + diff.x - 20}px`;
-        highlight.style.top = `${rect.top + diff.y - 20}px`;
-        highlight.style.position = "absolute";
-
-        document.body.appendChild(highlight);
-
         setTimeout(() => {
-          highlight.remove();
+          marker.remove();
           current++;
           if (current >= rounds.length) {
             window.location.href = "logic.html";
@@ -106,8 +113,12 @@
           }
         }, 2000);
       } else {
+        marker.classList.add("wrong-x");
         result.textContent = "❌ Not quite. Try again.";
         result.classList.remove("hidden");
+        setTimeout(() => {
+          marker.remove();
+        }, 1500);
       }
     });
 
