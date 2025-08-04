@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Puzzle 4 – Logic Puzzle</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>🧩 Puzzle 4: Who Owns the Fish?</h1>
+    <p class="note">All answers are <strong>one word only</strong>. Use lowercase or uppercase — both are fine.</p>
+
+    <div id="clues">
+      <p>There are 4 friends: Alice, Bob, Charlie, and Dana. Each lives in a different-colored house and owns a different pet.</p>
+      <ol style="text-align: left; margin-top: 1em;">
+        <li>Bob lives in the blue house.</li>
+        <li>The red house is immediately to the left of the green house.</li>
+        <li>Alice owns the cat.</li>
+        <li>Dana lives in the first house.</li>
+        <li>The person who owns the bird lives next to the one with the dog.</li>
+        <li>Charlie lives next to the yellow house.</li>
+        <li>The fish lives in the green house.</li>
+        <li>The owner of the dog lives next to the green house.</li>
+      </ol>
+    </div>
+
+    <input type="text" id="logic-input" placeholder="Who owns the fish?" />
+    <button id="submit-logic">Submit</button>
+    <p id="logic-feedback" class="hidden"></p>
+  </main>
+
+  <script>
+    const input = document.getElementById("logic-input");
+    const button = document.getElementById("submit-logic");
+    const feedback = document.getElementById("logic-feedback");
+
+    button.addEventListener("click", () => {
+      const answer = input.value.trim().toLowerCase();
+      if (answer === "charlie") {
+        feedback.textContent = "✅ Correct! Moving on...";
+        feedback.classList.remove("hidden");
+        setTimeout(() => {
+          window.location.href = "reward.html";
+        }, 1500);
+      } else {
+        feedback.textContent = "❌ Nope. Keep thinking.";
+        feedback.classList.remove("hidden");
+      }
+    });
+  </script>
+</body>
+</html>
